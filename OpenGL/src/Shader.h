@@ -11,13 +11,13 @@ class Shader
 private:
 	unsigned int m_RenderID;
 	std::string m_FliePath;
-	std::unordered_map<std::string, int> m_UniformLocationCache;
+	mutable std::unordered_map<std::string, int> m_UniformLocationCache;
 public:
 	Shader(const std::string& filepath);
 	~Shader();
 	void Bind() const;
 	void UnBind() const;
-	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) ;
 	void SetUniform1f(const std::string& name, float v0);
 	void SetUniform1i(const std::string& name, int i);
 	void SetUniformMat4f(const std::string& name, const glm::mat4& proj);
@@ -26,6 +26,6 @@ private:
 	unsigned int CompileShader(unsigned int type, const std::string& source);
 	unsigned int CreateShader(const std::string& vertexSource, const std::string& fragmentSource);
 
-	int GetUniformLocation(const std::string& name);
+	int GetUniformLocation(const std::string& name) const;
 };
 
