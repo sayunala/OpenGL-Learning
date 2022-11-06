@@ -489,6 +489,7 @@
     <None Include="src\vender\glm\gtx\wrap.inl">
       <Filter>头文件</Filter>
     </None>
+    <None Include="res\Shaders\Batch.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Renderer.h">

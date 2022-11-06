@@ -171,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Shaders\Basic.shader" />
+    <None Include="res\Shaders\Batch.shader" />
     <None Include="src\vender\glm\detail\func_common.inl" />
     <None Include="src\vender\glm\detail\func_common_simd.inl" />
     <None Include="src\vender\glm\detail\func_exponential.inl" />
