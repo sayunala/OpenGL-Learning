@@ -4,6 +4,7 @@
 #include "VertexBufferLayout.h"
 #include "Texture.h"
 #include <memory>
+#include <array>
 namespace test
 {
 	class TestBatchRender :
@@ -24,5 +25,9 @@ namespace test
 
 		glm::mat4 m_Proj, m_View;
 		glm::vec3 m_TranslationA, m_TranslationB;
+		float m_BotColorPosition[2] = {100.0f, 100.0f};
+		float m_BotbwPosition[2] = {300.0f, 100.0f};
+
+		std::array<Vertex, 4> CreateQuad(const float& x, const float& y, const float TexID);
 	};
 }

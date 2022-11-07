@@ -9,8 +9,10 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+
 namespace test
 {
+	
 	TestBatchRender::TestBatchRender()
 		:m_Proj(glm::ortho(0.0f, 960.0f, 0.0f, 720.0f, -1.0f, 1.0f)),
 		m_View(glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0))),
@@ -22,10 +24,10 @@ namespace test
 			200.0f, 200.0f, 1.0f, 1.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f,  // 2
 			100.0f, 200.0f, 0.0f, 1.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, // 3
 
-			300.0f, 300.0f, 0.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f,// 4
-			400.0f, 300.0f, 1.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f,// 5
-			400.0f, 400.0f, 1.0f, 1.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f,  // 6
-			300.0f, 400.0f, 0.0f, 1.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f // 7
+			300.0f, 100.0f, 0.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f,// 4
+			400.0f, 100.0f, 1.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f,// 5
+			400.0f, 200.0f, 1.0f, 1.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f,  // 6
+			300.0f, 200.0f, 0.0f, 1.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f // 7
 		};
 
 		unsigned int indices[] = {
@@ -40,28 +42,29 @@ namespace test
 
 		m_VAO = std::make_unique<VertexArray>();
 
-		m_VertexBuffer = std::make_unique<VertexBuffer>(positions, 9 * 8 * sizeof(float));
-		VertexBufferLayout layout;
-		layout.Push<float>(2);
-		layout.Push<float>(2);
-		layout.Push<float>(4);
-		layout.Push<float>(1);
-		m_VAO->AddBufferLayout(*m_VertexBuffer, layout);
+		m_VertexBuffer = std::make_unique<VertexBuffer>(nullptr, sizeof(positions),GL_DYNAMIC_DRAW);
+		/*	VertexBufferLayout layout;
+			layout.Push<float>(2);
+			layout.Push<float>(2);
+			layout.Push<float>(4);
+			layout.Push<float>(1);
+
+			m_VAO->AddBufferLayout(*m_VertexBuffer, layout);*/
 
 		m_IndexBuffer = std::make_unique<IndexBuffer>(indices, 12);
 
 		m_Shader = std::make_unique<Shader>("res/Shaders/Batch.shader");
-		m_Shader->Bind();
-		
+		//m_Shader->Bind();
+
 
 		m_Texture[0] = std::make_unique<Texture>("res/Textures/bot_color.png");
 		m_Texture[1] = std::make_unique<Texture>("res/Textures/bot_bw.png");
-		for (unsigned int i = 0; i < 2; i++)
-		{
-			m_Texture[i]->Bind(i);
-		}
-		int sample2D[2] = { 0,1 };
-		m_Shader->SetUniform1iv("u_Textures", 2, sample2D);
+		//for (unsigned int i = 0; i < 2; i++)
+		//{
+		//	m_Texture[i]->Bind(i);
+		//}
+		//int sample2D[2] = { 0,1 };
+		//m_Shader->SetUniform1iv("u_Textures", 2, sample2D);
 		
 		
 	}
@@ -72,6 +75,34 @@ namespace test
 
 	void TestBatchRender::OnUpdate(float deltaTime)
 	{
+		auto Quad0=CreateQuad(m_BotColorPosition[0], m_BotColorPosition[1], 0.0f);
+		auto Quad1=CreateQuad(m_BotbwPosition[0], m_BotbwPosition[1], 1.0f);
+		Vertex vertices[8];
+		memcpy(vertices, Quad0.data(), sizeof(Quad0));
+		memcpy(vertices + 4, Quad1.data(), sizeof(Quad0));
+
+		m_VertexBuffer->Bind();
+		m_VertexBuffer->SubData(sizeof(vertices), vertices);
+	
+
+		VertexBufferLayout layout;
+		layout.Push<float>(2);
+		layout.Push<float>(2);
+		layout.Push<float>(4);
+		layout.Push<float>(1);
+
+		m_VAO->AddBufferLayout(*m_VertexBuffer, layout);
+	
+		m_Shader->Bind();
+
+
+		for (unsigned int i = 0; i < 2; i++)
+		{
+			m_Texture[i]->Bind(i);
+		}
+		int sample2D[2] = { 0,1 };
+		m_Shader->SetUniform1iv("u_Textures", 2, sample2D);
+		
 	}
 
 	void TestBatchRender::OnRender()
@@ -103,10 +134,40 @@ namespace test
 			}*/
 	}
 
+	std::array<Vertex, 4> TestBatchRender::CreateQuad(const float& x, const float& y, const float TexID)
+	{
+		Vertex v0;
+		v0.Position = { x ,y };
+		v0.TexCoords = { 0.0f, 0.0f };
+		v0.Color = { 0.18f, 0.6f, 0.96f, 1.0f };
+		v0.TexID = TexID;
+
+		Vertex v1;
+		v1.Position = { x + 100,y };
+		v1.TexCoords = { 1.0f, 0.0f };
+		v1.Color = { 0.18f, 0.6f, 0.96f, 1.0f };
+		v1.TexID = TexID;
+
+		Vertex v2;
+		v2.Position = { x + 100 ,y +100 };
+		v2.TexCoords = { 1.0f, 1.0f };
+		v2.Color = { 0.18f, 0.6f, 0.96f, 1.0f };
+		v2.TexID = TexID;
+
+		Vertex v3;
+		v3.Position = { x ,y + 100 };
+		v3.TexCoords = { 0.0f, 1.0f };
+		v3.Color = { 0.18f, 0.6f, 0.96f, 1.0f };
+		v3.TexID = TexID;
+		return {v0,v1,v2,v3};
+	}
+
 	void TestBatchRender::OnImGuiRender()
 	{
 		ImGui::SliderFloat3("m_TranslationA", &m_TranslationA.x, 0.0f, 960.0f);
 		ImGui::SliderFloat3("m_TranslationB", &m_TranslationB.x, 0.0f, 960.0f);
+		ImGui::DragFloat2("bot_color Position", m_BotColorPosition, 25.0f);
+		ImGui::DragFloat2("bot_bw Position", m_BotbwPosition, 25.0f);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 }
