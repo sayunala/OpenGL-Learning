@@ -7,6 +7,10 @@
 #include <array>
 namespace test
 {
+	const size_t MaxQuadCount = 1000;
+	const size_t MaxVertexCount = 4 * MaxQuadCount;
+	const size_t MaxIndexCount = 6 * MaxQuadCount;
+	
 	class TestBatchRender :
 		public Test
 	{
@@ -29,5 +33,6 @@ namespace test
 		float m_BotbwPosition[2] = {300.0f, 100.0f};
 
 		std::array<Vertex, 4> CreateQuad(const float& x, const float& y, const float TexID);
+		Vertex* CreateQuad(Vertex* target, const float& x, const float& y, const float TexID);
 	};
 }

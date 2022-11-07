@@ -1,4 +1,5 @@
-﻿  Application.cpp
-  TestBatchRender.cpp
-  正在生成代码...
+﻿  TestBatchRender.cpp
+D:\CppCode\OpenGL\OpenGL\src\tests\TestBatchRender.cpp(101,55): warning C4244: “参数”: 从“int”转换到“const float”，可能丢失数据
+D:\CppCode\OpenGL\OpenGL\src\tests\TestBatchRender.cpp(101,36): warning C4244: “参数”: 从“int”转换到“const float”，可能丢失数据
+D:\CppCode\OpenGL\OpenGL\src\tests\TestBatchRender.cpp(101,33): warning C4244: “参数”: 从“int”转换到“const float”，可能丢失数据
   OpenGL.vcxproj -> D:\CppCode\OpenGL\Debug\OpenGL.exe
