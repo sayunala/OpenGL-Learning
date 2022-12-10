@@ -14,6 +14,7 @@ private:
 	mutable std::unordered_map<std::string, int> m_UniformLocationCache;
 public:
 	Shader(const std::string& filepath);
+	Shader(const std::string& vertexshader, const std::string& fragmentshader);
 	~Shader();
 	void Bind() const;
 	void UnBind() const;
@@ -25,6 +26,7 @@ public:
 	
 private:
 	std::tuple<std::string, std::string> ParseShader(const std::string& filepath);
+	std::string ParseSingleShader(const std::string& filepath);
 	unsigned int CompileShader(unsigned int type, const std::string& source);
 	unsigned int CreateShader(const std::string& vertexSource, const std::string& fragmentSource);
 

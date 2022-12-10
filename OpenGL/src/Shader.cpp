@@ -6,7 +6,12 @@ Shader::Shader(const std::string& filepath)
 	auto [vertexSource, fragmentSource] = ParseShader(filepath);
 	m_RenderID = CreateShader(vertexSource, fragmentSource);
 }
-
+Shader::Shader(const std::string& vertexshader, const std::string& fragmentshader)
+{
+	std::string vertexSource = ParseSingleShader(vertexshader);
+	std::string fragmentSource = ParseSingleShader(fragmentshader);
+	m_RenderID = CreateShader(vertexSource, fragmentSource);
+}
 Shader::~Shader()
 {
 	GLCall(glDeleteProgram(m_RenderID));
@@ -47,6 +52,18 @@ std::tuple<std::string, std::string> Shader::ParseShader(const std::string& file
 	}
 	return std::tuple<std::string, std::string>(ss[0].str(), ss[1].str());
 
+}
+std::string Shader::ParseSingleShader(const std::string& filepath)
+{
+	std::ifstream stream(filepath);
+	std::string line;
+	std::stringstream ss;
+
+	while (getline(stream, line))
+	{
+		ss << line << "\n";
+	}
+	return ss.str();
 }
 /*
 * ±àÒë×ÅÉ«Æ÷

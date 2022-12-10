@@ -19,7 +19,7 @@
 #include "./tests/TestClearColor.h"
 #include "tests/TestTexture2D.h"
 #include "tests/TestBatchRender.h"
-
+#include "tests/TestLearningTexture.h"
 static std::tuple<std::string, std::string>ParseShader(const std::string& filepath) {
     std::ifstream stream(filepath);
     std::string line;
@@ -111,13 +111,14 @@ int main(void)
 	// GL 3.0 + GLSL 130
 	const char* glsl_version = "#version 130";
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
     //GLCall(glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3));
     //GLCall(glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3));
     //GLCall(glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE)); 
+    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   
     /* Create a windowed m ode window and its OpenGL context */
     window = glfwCreateWindow(960, 720, "Hello OpenGL", NULL, NULL);
@@ -131,10 +132,11 @@ int main(void)
     glfwMakeContextCurrent(window);
 
     glfwSwapInterval(1);
-
+    
     if (glewInit() != GLEW_OK)
         std::cout << "Error!" << std::endl;
     std::cout << glGetString(GL_VERSION) << std::endl;
+
     {
         
         GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA));
@@ -156,7 +158,7 @@ int main(void)
         testMenu->RegisterTest<test::TestClearColor>("Clear Color");
         testMenu->RegisterTest<test::TestTexture2D>("Texture2D");
         testMenu->RegisterTest<test::TestBatchRender>("TestBatchRender");
-      
+        testMenu->RegisterTest<test::TestLearningTexture>("LearnOpenglTexture");
         while (!glfwWindowShouldClose(window))
         {
 

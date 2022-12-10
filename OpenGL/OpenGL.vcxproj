@@ -168,10 +168,13 @@
     <ClCompile Include="src\tests\TestClearColor.cpp" />
     <ClCompile Include="src\tests\TestTexture2D.cpp" />
     <ClCompile Include="src\tests\TestBatchRender.cpp" />
+    <ClCompile Include="src\tests\TestLearningTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Shaders\Basic.shader" />
     <None Include="res\Shaders\Batch.shader" />
+    <None Include="res\Shaders\LearningOpenglShader\fragmentshader.glsl" />
+    <None Include="res\Shaders\LearningOpenglShader\vertexshader.glsl" />
     <None Include="src\vender\glm\detail\func_common.inl" />
     <None Include="src\vender\glm\detail\func_common_simd.inl" />
     <None Include="src\vender\glm\detail\func_exponential.inl" />
@@ -613,11 +616,13 @@
     <ClInclude Include="src\tests\TestClearColor.h" />
     <ClInclude Include="src\tests\TestTexture2D.h" />
     <ClInclude Include="src\tests\TestBatchRender.h" />
+    <ClInclude Include="src\tests\TestLearningTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\fiveGame\assets\Texture\score.png" />
     <Image Include="..\..\..\Program\Steam\steamapps\common\wallpaper_engine\projects\defaultprojects\corsair_o_tron\images\bot_bw.png" />
     <Image Include="res\Textures\bot_color.png" />
+    <Image Include="res\Textures\LearnOpenglTextures\awesomeface.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
