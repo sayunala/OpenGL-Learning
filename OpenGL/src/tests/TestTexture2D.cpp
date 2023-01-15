@@ -39,7 +39,7 @@ namespace test
 		m_VAO->AddBufferLayout(*m_VertexBuffer, layout);
 
 		m_IndexBuffer = std::make_unique<IndexBuffer>(indices, 6);
-
+		
 		m_Shader = std::make_unique<Shader>("res/Shaders/Basic.shader");
 		m_Shader->Bind();
 		m_Shader->SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
@@ -64,7 +64,7 @@ namespace test
 		Renderer renderer;
 
 		m_Texture->Bind();
-
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		{
 			glm::mat4 model = glm::translate(glm::mat4(1.0f), m_TranslationA);
 			glm::mat4 mvp = m_Proj * m_View * model;

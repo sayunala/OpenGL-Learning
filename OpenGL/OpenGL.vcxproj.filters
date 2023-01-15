@@ -81,6 +81,12 @@
     <ClCompile Include="src\tests\TestLearningTexture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestLearningCoordSys.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Shaders\Basic.shader" />
@@ -495,6 +501,7 @@
     <None Include="res\Shaders\Batch.shader" />
     <None Include="res\Shaders\LearningOpenglShader\fragmentshader.glsl" />
     <None Include="res\Shaders\LearningOpenglShader\vertexshader.glsl" />
+    <None Include="res\Shaders\LearningOpenglShader\CoordSys\vertexshader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Renderer.h">
@@ -1409,6 +1416,18 @@
     <ClInclude Include="src\tests\TestLearningTexture.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\tests\TestLearningCoordSys.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\TestHead.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\LightTest\TestLight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\fiveGame\assets\Texture\score.png">
@@ -1421,6 +1440,12 @@
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="res\Textures\LearnOpenglTextures\awesomeface.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\Textures\LearnOpenglTextures\container.jpg">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\Textures\bot_bw.png">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

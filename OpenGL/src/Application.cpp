@@ -1,4 +1,4 @@
-#include<GL/glew.h>
+ï»¿#include<GL/glew.h>
 #include <GLFW/glfw3.h>
 #include<iostream>
 #include<fstream>
@@ -17,9 +17,28 @@
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 #include "./tests/TestClearColor.h"
-#include "tests/TestTexture2D.h"
-#include "tests/TestBatchRender.h"
-#include "tests/TestLearningTexture.h"
+#include "tests/TestHead.h"
+#include "Camera.h"
+
+const unsigned int SCR_WIDTH = 960;
+const unsigned int SCR_HEIGHT = 720;
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+extern Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+float lastX = SCR_WIDTH / 2.0f;
+float lastY = SCR_HEIGHT / 2.0f;
+bool firstMouse = true;
+// timing
+float deltaTime = 0.0f;	// time between current frame and last frame
+float lastFrame = 0.0f;
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+//void processInput(GLFWwindow* window);
 static std::tuple<std::string, std::string>ParseShader(const std::string& filepath) {
     std::ifstream stream(filepath);
     std::string line;
@@ -46,44 +65,44 @@ static std::tuple<std::string, std::string>ParseShader(const std::string& filepa
     
 }
 /*
-* ±àÒë×ÅÉ«Æ÷
+* ç¼–è¯‘ç€è‰²å™¨
 */
 static unsigned int CompileShader(unsigned int type, const std::string& source) {
     unsigned int id = glCreateShader(type);
     const char* src = source.c_str();
-    glShaderSource(id, 1, &src, nullptr);//°ó¶¨×ÅÉ«Æ÷´úÂë£¬Éú³É×ÅÉ«Æ÷
-    glCompileShader(id);//±àÒëid±íÊ¾µÄ×ÅÉ«Æ÷
+    glShaderSource(id, 1, &src, nullptr);//ç»‘å®šç€è‰²å™¨ä»£ç ï¼Œç”Ÿæˆç€è‰²å™¨
+    glCompileShader(id);//ç¼–è¯‘idè¡¨ç¤ºçš„ç€è‰²å™¨
 
     int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);//»ñÈ¡µ±Ç°±àÒë×´Ì¬
+    glGetShaderiv(id, GL_COMPILE_STATUS, &result);//è·å–å½“å‰ç¼–è¯‘çŠ¶æ€
     if (result == GL_FALSE) {
         int length;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);//»ñÈ¡ĞèÒª´òÓ¡µÄ±àÒëĞÅÏ¢³¤¶È
+        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);//è·å–éœ€è¦æ‰“å°çš„ç¼–è¯‘ä¿¡æ¯é•¿åº¦
         char* message = (char*)_malloca(sizeof(char) * length);
-        glGetShaderInfoLog(id, length, &length, message);//»ñÈ¡±àÒëÊ§°ÜÈÕÖ¾
+        glGetShaderInfoLog(id, length, &length, message);//è·å–ç¼–è¯‘å¤±è´¥æ—¥å¿—
         
         std::cout << "Failed to compile " 
             << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") 
             << "shader" << std::endl;
         std::cout << message << std::endl;
 
-        glDeleteShader(id);//±àÒëÊ§°ÜÉ¾³ıidÖ¸ÏòµÄ×ÅÉ«Æ÷
+        glDeleteShader(id);//ç¼–è¯‘å¤±è´¥åˆ é™¤idæŒ‡å‘çš„ç€è‰²å™¨
         return 0;
     }
     return id;
 
 }
 static unsigned int CreateShader(const std::string& vertexSource, const std::string& fragmentSource) {
-    unsigned int program = glCreateProgram();//´´½¨×ÅÉ«Æ÷³ÌĞò
+    unsigned int program = glCreateProgram();//åˆ›å»ºç€è‰²å™¨ç¨‹åº
     unsigned int vs = CompileShader(GL_VERTEX_SHADER,vertexSource);
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentSource);
 
-    glAttachShader(program, vs);//½«Éú³É×ÅÉ«Æ÷¸½¼Óµ½³ÌĞòÖĞ
+    glAttachShader(program, vs);//å°†ç”Ÿæˆç€è‰²å™¨é™„åŠ åˆ°ç¨‹åºä¸­
     glAttachShader(program, fs);
-    glLinkProgram(program);//Á´½Ó³ÌĞò
-    glValidateProgram(program);//ÑéÖ¤³ÌĞòµÄÓĞĞ§ĞÔ
+    glLinkProgram(program);//é“¾æ¥ç¨‹åº
+    glValidateProgram(program);//éªŒè¯ç¨‹åºçš„æœ‰æ•ˆæ€§
 
-    glDeleteShader(vs);//É¾³ıÒÑ¾­Ã»ÓÃµÄ×ÅÉ«Æ÷
+    glDeleteShader(vs);//åˆ é™¤å·²ç»æ²¡ç”¨çš„ç€è‰²å™¨
     glDeleteShader(fs);
     return program;
 }
@@ -121,7 +140,7 @@ int main(void)
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   
     /* Create a windowed m ode window and its OpenGL context */
-    window = glfwCreateWindow(960, 720, "Hello OpenGL", NULL, NULL);
+    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hello OpenGL", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -130,13 +149,14 @@ int main(void)
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
-
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
     glfwSwapInterval(1);
-    
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     if (glewInit() != GLEW_OK)
         std::cout << "Error!" << std::endl;
-    std::cout << glGetString(GL_VERSION) << std::endl;
-
+    std::cout << glGetString(GL_VERSION) << std::endl; 
+    glEnable(GL_DEPTH_TEST);
     {
         
         GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA));
@@ -155,10 +175,11 @@ int main(void)
         test::Test* currentTest = nullptr;
         test::TestMenu *testMenu = new test::TestMenu(currentTest);
         currentTest = testMenu;
-        testMenu->RegisterTest<test::TestClearColor>("Clear Color");
-        testMenu->RegisterTest<test::TestTexture2D>("Texture2D");
-        testMenu->RegisterTest<test::TestBatchRender>("TestBatchRender");
-        testMenu->RegisterTest<test::TestLearningTexture>("LearnOpenglTexture");
+       //testMenu->RegisterTest<test::TestClearColor>("Clear Color");
+       //testMenu->RegisterTest<test::TestTexture2D>("Texture2D");
+       //testMenu->RegisterTest<test::TestBatchRender>("TestBatchRender");
+       //testMenu->RegisterTest<test::TestLearningTexture>("LearnOpenglTexture");
+        testMenu->RegisterTest<test::TestLearningCoordSys>("LearningCoordSys");
         while (!glfwWindowShouldClose(window))
         {
 
@@ -170,8 +191,14 @@ int main(void)
 
             if (currentTest)
             {
-                currentTest->OnUpdate(0.0f);
+                float currentFrame = static_cast<float>(glfwGetTime());
+                deltaTime = currentFrame - lastFrame;
+                lastFrame = currentFrame;
+                currentTest->OnUpdate(0);
+                currentTest->processInput(window, deltaTime);
+                currentTest->setCamera(&camera);
                 currentTest->OnRender();
+               
 				ImGui::Begin("Test");
                 if (currentTest != testMenu && ImGui::Button("<-"))
                 {
@@ -199,4 +226,22 @@ int main(void)
 	glfwDestroyWindow(window);
 	glfwTerminate();
     return 0;
+}
+
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn) {
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
+    if (firstMouse) {
+
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+    lastX = xpos;
+    lastY = ypos;
+
+    camera.ProcessMouseMovement(xoffset, yoffset);
 }

@@ -15,7 +15,8 @@ namespace test
 		public Test
 	{
 	public:
-		TestBatchRender();
+		TestBatchRender() ;
+		//TestBatchRender(GLFWwindow* window);
 		~TestBatchRender();
 		void OnUpdate(float deltatime)override;
 		void OnImGuiRender() override;

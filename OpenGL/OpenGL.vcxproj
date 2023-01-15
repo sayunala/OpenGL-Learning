@@ -147,11 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\IndexBuffer .cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\tests\Test.cpp" />
+    <ClCompile Include="src\tests\TestLearningCoordSys.cpp" />
     <ClCompile Include="src\vender\glm\detail\glm.cpp" />
     <ClCompile Include="src\vender\imgui\imgui.cpp" />
     <ClCompile Include="src\vender\imgui\imgui_demo.cpp" />
@@ -173,6 +175,7 @@
   <ItemGroup>
     <None Include="res\Shaders\Basic.shader" />
     <None Include="res\Shaders\Batch.shader" />
+    <None Include="res\Shaders\LearningOpenglShader\CoordSys\vertexshader.glsl" />
     <None Include="res\Shaders\LearningOpenglShader\fragmentshader.glsl" />
     <None Include="res\Shaders\LearningOpenglShader\vertexshader.glsl" />
     <None Include="src\vender\glm\detail\func_common.inl" />
@@ -313,10 +316,14 @@
     <None Include="src\vender\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\tests\LightTest\TestLight.h" />
     <ClInclude Include="src\tests\Test.h" />
+    <ClInclude Include="src\tests\TestHead.h" />
+    <ClInclude Include="src\tests\TestLearningCoordSys.h" />
     <ClInclude Include="src\vender\glm\common.hpp" />
     <ClInclude Include="src\vender\glm\detail\compute_common.hpp" />
     <ClInclude Include="src\vender\glm\detail\compute_vector_relational.hpp" />
@@ -621,8 +628,10 @@
   <ItemGroup>
     <Image Include="..\..\..\fiveGame\assets\Texture\score.png" />
     <Image Include="..\..\..\Program\Steam\steamapps\common\wallpaper_engine\projects\defaultprojects\corsair_o_tron\images\bot_bw.png" />
+    <Image Include="res\Textures\bot_bw.png" />
     <Image Include="res\Textures\bot_color.png" />
     <Image Include="res\Textures\LearnOpenglTextures\awesomeface.png" />
+    <Image Include="res\Textures\LearnOpenglTextures\container.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

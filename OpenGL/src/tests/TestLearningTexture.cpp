@@ -43,9 +43,9 @@ namespace test
 
 	
 
-		m_Texture = std::make_unique<Texture>("res/Textures/LearnOpenglTextures/awesomeface.png");
+		//m_Texture = std::make_unique<Texture>("res/Textures/LearnOpenglTextures/awesomeface.png");
 		m_Textures[0] = std::make_unique<Texture>("res/Textures/LearnOpenglTextures/awesomeface.png"); 
-		m_Textures[1] = std::make_unique<Texture>("res/Textures/bot_color.png");
+		m_Textures[1] = std::make_unique<Texture>("res/Textures/LearnOpenglTextures/container.jpg");
 		for (unsigned int i = 0; i < 2; i++)
 		{
 			m_Textures[i]->Bind(i);
@@ -77,7 +77,7 @@ namespace test
 		trans = glm::rotate(trans,(float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
 		float scaleAmount = static_cast<float>(sin(glfwGetTime()));
 		trans = glm::scale(trans, glm::vec3(scaleAmount, scaleAmount, 1.0));
-		
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		{
 			glm::mat4 model = glm::translate(glm::mat4(1.0f), m_TranslationA);
 			glm::mat4 mvp = m_Proj * m_View * model;
