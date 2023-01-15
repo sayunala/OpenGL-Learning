@@ -180,6 +180,7 @@ int main(void)
        //testMenu->RegisterTest<test::TestBatchRender>("TestBatchRender");
        //testMenu->RegisterTest<test::TestLearningTexture>("LearnOpenglTexture");
         testMenu->RegisterTest<test::TestLearningCoordSys>("LearningCoordSys");
+        testMenu->RegisterTest<test::TestLight>("LearningLightSys");
         while (!glfwWindowShouldClose(window))
         {
 
