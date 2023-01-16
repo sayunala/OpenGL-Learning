@@ -23,6 +23,8 @@ public:
 	void SetUniform1f(const std::string& name, float v0);
 	void SetUniform1i(const std::string& name, int i);
 	void SetUniform1iv(const std::string& name, int count, int* value);
+
+	void SetUniformVec3f(const std::string& name, const glm::vec3& value);
 	void SetUniformMat4f(const std::string& name, const glm::mat4& proj);
 	
 private:
