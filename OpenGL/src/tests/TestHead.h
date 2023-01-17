@@ -3,3 +3,4 @@
 #include "tests/TestLearningTexture.h"
 #include "tests/TestLearningCoordSys.h"
 #include "tests/LightTest/TestLight.h" 
+#include "tests/LightTest/TestMaterial.h"

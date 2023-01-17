@@ -181,6 +181,7 @@ int main(void)
        //testMenu->RegisterTest<test::TestLearningTexture>("LearnOpenglTexture");
         testMenu->RegisterTest<test::TestLearningCoordSys>("LearningCoordSys");
         testMenu->RegisterTest<test::TestLight>("LearningLightSys");
+        testMenu->RegisterTest<test::TestMaterial>("LearningLightSys - Material");
         while (!glfwWindowShouldClose(window))
         {
 
