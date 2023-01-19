@@ -4,3 +4,4 @@
 #include "tests/TestLearningCoordSys.h"
 #include "tests/LightTest/TestLight.h" 
 #include "tests/LightTest/TestMaterial.h"
+#include "tests/LightTest/TestMap.h"

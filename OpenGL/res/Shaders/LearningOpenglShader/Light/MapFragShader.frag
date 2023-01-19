@@ -1,5 +1,4 @@
 #version 330 core
-
 out vec4 FragColor;
 //uniform  vec3 u_ObjectColor;
 //uniform vec3 u_LightColor;
@@ -7,12 +6,13 @@ out vec4 FragColor;
 uniform vec3 u_Lightpos;//灯光位置
 uniform vec3 u_Viewpos;// 眼睛位置
 in vec3 v_Normal;//法向量
-in vec3 v_Fragpos;
+in vec3 v_Fragpos;//像素的世界位置计算光线的
+in vec2 v_TexCoords;// 贴图坐标
+
 
 struct Material{
-	vec3 ambient;//环境光照下这个表面反射的颜色 
-	vec3 diffuse;//漫反射光照下表面颜色 
-	vec3 specular;// 表面上镜面高光的颜色
+	sampler2D diffuse;//漫反射光照下表面颜色 
+	sampler2D specular;// 表面上镜面高光的颜色
 
 	float shinines;
 };
@@ -27,6 +27,7 @@ struct Light{
 
 uniform Material u_Material;
 uniform Light u_Light;
+
 void main(){
 	
 	float ambienStrength = 0.1;
@@ -45,8 +46,9 @@ void main(){
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0f), u_Material.shinines);
 
 	vec3 specular =  spec * u_Light.specular;
-	
 	//计算结果
-	vec3 result = diffuse * u_Material.diffuse + ambient * u_Material.ambient + specular * u_Material.specular;
+	vec3 result = diffuse * vec3(texture(u_Material.diffuse, v_TexCoords)) + 
+				ambient * vec3(texture(u_Material.diffuse, v_TexCoords)) + 
+				specular * vec3(texture(u_Material.specular, v_TexCoords));
 	FragColor = vec4(result, 1.0f);
 }
