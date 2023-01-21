@@ -82,10 +82,10 @@ namespace test
 		m_Maps[0] = std::make_unique<Texture>("res/Textures/LearnOpenglTextures/container2.png");
 		m_Maps[1] = std::make_unique<Texture>("res/Textures/LearnOpenglTextures/container2_specular.png");
 
-		m_VAO->AddBufferLayout(*m_VertexBuffer, layout);
-		for (int i = 0; i < 2; i++) {
+		m_Maps[2] = std::make_unique<Texture>("res/Textures/LearnOpenglTextures/matrix.jpg");
 
-			
+		m_VAO->AddBufferLayout(*m_VertexBuffer, layout);
+		for (int i = 0; i < 3; i++) {
 			m_Maps[i]->Bind(i);
 		}
 
@@ -139,7 +139,11 @@ namespace test
 			//m_Shader->SetUniform3f("u_Material.ambient", 1.0f, 0.5f, 0.31f);
 			m_Shader->SetUniform1i("u_Material.diffuse", 0);
 			m_Shader->SetUniform1i("u_Material.specular", 1);
+			m_Shader->SetUniform1i("u_Material.emission", 2);
 			m_Shader->SetUniform1f("u_Material.shinines", 32.0f);
+			m_Shader->SetUniform1f("u_Matrixlight", (1.0 + sin(glfwGetTime())) / 2 + 0.5);
+			float offset = glfwGetTime();
+			m_Shader->SetUniform1f("u_Matrixmove", offset );
 			//µ∆π‚ Ù–‘…Ë÷√
 			glm::vec3 lightColor;
 			lightColor.x = sin(glfwGetTime() * 2.0f);

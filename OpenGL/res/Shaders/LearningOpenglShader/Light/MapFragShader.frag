@@ -13,7 +13,7 @@ in vec2 v_TexCoords;// 贴图坐标
 struct Material{
 	sampler2D diffuse;//漫反射光照下表面颜色 
 	sampler2D specular;// 表面上镜面高光的颜色
-
+	sampler2D emission;
 	float shinines;
 };
 
@@ -27,6 +27,8 @@ struct Light{
 
 uniform Material u_Material;
 uniform Light u_Light;
+uniform float u_Matrixlight;
+uniform float u_Matrixmove;
 
 void main(){
 	
@@ -46,9 +48,11 @@ void main(){
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0f), u_Material.shinines);
 
 	vec3 specular =  spec * u_Light.specular;
+
+	vec3 emission = u_Matrixlight*texture(u_Material.emission, v_TexCoords + vec2(0.0, u_Matrixmove)).rgb;
 	//计算结果
 	vec3 result = diffuse * vec3(texture(u_Material.diffuse, v_TexCoords)) + 
 				ambient * vec3(texture(u_Material.diffuse, v_TexCoords)) + 
-				specular * vec3(texture(u_Material.specular, v_TexCoords));
+				specular * vec3(texture(u_Material.specular, v_TexCoords)) + emission;
 	FragColor = vec4(result, 1.0f);
 }
